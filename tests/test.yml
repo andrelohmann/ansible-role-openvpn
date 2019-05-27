@@ -4,8 +4,8 @@
   become_method: sudo
   vars:
     # easy_rsa variables
-    easyrsa_user: root
-    easyrsa_dir: "/root"
+    easyrsa_user: travis
+    easyrsa_dir: "/home/travis"
     easyrsa_use_tls_auth: True
     easyrsa_key_country: "DE"
     easyrsa_key_province: "SomeProvince"
@@ -43,7 +43,7 @@
       ip: 172.16.0.20
     - name: clientThree
       ip: 172.16.0.30
-    openvpn_import_directory: "/root/easy-rsa/keys"
+    openvpn_import_directory: "/home/travis/easy-rsa/keys"
     openvpn_ca_crt_filename: "ca.crt"
     openvpn_server_crt_filename: "server.crt"
     openvpn_server_key_filename: "server.key"

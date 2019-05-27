@@ -1,0 +1,12 @@
+---
+openvpn_import_directory: "host_templates/{{ inventory_hostname }}/files/" # Files to Import
+openvpn_listen_ip: 0.0.0.0
+openvpn_listen_port: 1194
+openvpn_network: 172.16.0.0
+openvpn_netmask: 255.255.255.0
+openvpn_push_routes:
+- 'push "route 172.16.0.0 255.255.255.0"'
+openvpn_max_clients: 10
+openvpn_user: openvpn
+openvpn_group: openvpn
+openvpn_static_clients: []

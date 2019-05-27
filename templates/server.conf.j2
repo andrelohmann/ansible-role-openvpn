@@ -1,0 +1,95 @@
+local {{ openvpn_listen_ip }}
+
+port {{ openvpn_listen_port }}
+
+proto udp
+
+dev tun
+
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/server.crt
+key /etc/openvpn/server.key  # This file should be kept secret
+dh /etc/openvpn/{{ openvpn_dh_filename }}
+
+server {{ openvpn_network }} {{ openvpn_netmask }}
+
+{% if openvpn_push_routes is defined %}
+{% for route in openvpn_push_routes %}
+{{ route }}
+{% endfor %}
+{% endif %}
+
+client-config-dir /etc/openvpn/staticclients
+
+# Uncomment this directive to allow different
+# clients to be able to "see" each other.
+# By default, clients will only see the server.
+# To force clients to only see the server, you
+# will also need to appropriately firewall the
+# server's TUN/TAP interface.
+client-to-client
+
+keepalive 10 3600
+
+# For extra security beyond that provided
+# by SSL/TLS, create an "HMAC firewall"
+# to help block DoS attacks and UDP port flooding.
+#
+# Generate with:
+#   openvpn --genkey --secret ta.key
+#
+# The server and each client must have
+# a copy of this key.
+# The second parameter should be '0'
+# on the server and '1' on the clients.
+tls-auth /etc/openvpn/ta.key 0 # This file is secret
+
+# Select a cryptographic cipher.
+# This config item must be copied to
+# the client config file as well.
+;cipher BF-CBC        # Blowfish (default)
+cipher AES-128-CBC   # AES
+;cipher DES-EDE3-CBC  # Triple-DES
+
+comp-lzo
+
+max-clients {{ openvpn_max_clients }}
+
+user {{ openvpn_user }}
+group {{ openvpn_group }}
+
+# The persist options will try to avoid
+# accessing certain resources on restart
+# that may no longer be accessible because
+# of the privilege downgrade.
+persist-key
+persist-tun
+
+# Output a short status file showing
+# current connections, truncated
+# and rewritten every minute.
+status /var/log/openvpn-status.log
+
+# By default, log messages will go to the syslog (or
+# on Windows, if running as a service, they will go to
+# the "\Program Files\OpenVPN\log" directory).
+# Use log or log-append to override this default.
+# "log" will truncate the log file on OpenVPN startup,
+# while "log-append" will append to it.  Use one
+# or the other (but not both).
+;log         openvpn.log
+log-append  /var/log/openvpn.log
+
+# Set the appropriate level of log
+# file verbosity.
+#
+# 0 is silent, except for fatal errors
+# 4 is reasonable for general usage
+# 5 and 6 can help to debug connection problems
+# 9 is extremely verbose
+verb 3
+
+# Silence repeating messages.  At most 20
+# sequential messages of the same message
+# category will be output to the log.
+;mute 20

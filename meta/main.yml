@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  role_name: openvpn
+  author: andrelohmann
+  description: ansible galaxy role to deploy an openvpn server
+  company: smartformer UG
+
+  license: MIT
+
+  min_ansible_version: 2.7
+
+  platforms:
+    - name: Ubuntu
+      versions:
+      - xenial
+      - bionic
+
+  galaxy_tags:
+  - openvpn
+  - easy-rsa
+
+dependencies: []
+...

@@ -36,7 +36,6 @@
     openvpn_max_clients: 10
     openvpn_user: openvpn
     openvpn_group: openvpn
-    openvpn_dh_filename: dh1024.pem
     openvpn_static_clients:
     - name: clientOne
       ip: 172.16.0.10
@@ -44,7 +43,7 @@
       ip: 172.16.0.20
     - name: clientThree
       ip: 172.16.0.30
-    openvpn_import_directory: "/root/easy-rsa/keys/"
+    openvpn_import_directory: "/root/easy-rsa/keys"
     openvpn_ca_crt_filename: "ca.crt"
     openvpn_server_crt_filename: "server.crt"
     openvpn_server_key_filename: "server.key"
